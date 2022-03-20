@@ -14,7 +14,7 @@ interface HomeProps {
   }
 }
 
-const Home: NextPage = ({ product }: HomeProps) => {
+export default function Home({ product }: HomeProps) {
   return (
     <>
       <Head>
@@ -32,12 +32,9 @@ const Home: NextPage = ({ product }: HomeProps) => {
         </section>
         <img src='/images/avatar.svg' alt='Girl coding' />
       </main>
-    </>
-    
+    </>    
   )
 }
-
-export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
   const price = await stripe.prices.retrieve('price_1KV2CaKjDhkpIGn9LPKbuilM', {
@@ -49,7 +46,7 @@ export const getStaticProps: GetStaticProps = async () => {
     amount: new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
-    }).format(price.unit_amount / 100)
+    }).format(price.unit_amount ? price.unit_amount / 100 : 0)
   }
   return {
     props: {
